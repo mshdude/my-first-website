@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -6,9 +7,11 @@ app = Flask(__name__)
 def home():
     if request.method == 'POST':
         message = request.form.get('user_message')
+        time_sent = datetime.now().strftime("%H:%M")
+
         if message:
             with open('messages.txt', 'a', encoding='utf-8') as file:
-                file.write(message + '\n')
+                file.write(f"{message}||{time_sent}\n")
         return redirect('/')
 
     try:
