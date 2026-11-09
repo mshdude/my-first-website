@@ -3,164 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cote Air Services</title>
+    <title>SOUTHDOWN_MET_BRIEFING</title>
     <style>
-        /* 1. TYPOGRAPHY: Drop the soft generic fonts. Use hard monospace or retro system fonts */
         body {
-            background-color: #0b0c10;
-            color: #e4e6eb;
+            background-color: #060709;
+            color: #c5c9d6;
             font-family: 'Courier New', Courier, monospace;
+            padding: 30px 15px;
             margin: 0;
-            padding: 40px 20px;
-            line-height: 1.6;
         }
-
-        /* 2. LAYOUT: Instead of a floating generic card, let's treat the page like a terminal terminal or minimalist log */
-        .workspace {
-            max-width: 650px;
+        .console {
+            max-width: 700px;
             margin: 0 auto;
+            border: 2px solid #1c1e2b;
+            background-color: #0c0d14;
+            padding: 25px;
         }
-
-        /* Raw headers with simple text punctuation instead of heavy neon styling */
-        h1 {
-            font-size: 1.5rem;
-            color: #ffffff;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        header {
+            border-bottom: 2px dashed #1c1e2b;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
         }
-
-        .subtitle {
-            font-size: 0.85rem;
-            color: #6272a4;
-            margin-bottom: 30px;
-        }
-
-        /* 3. INPUTS: Raw borders, zero fancy rounded box-shadows or gradients */
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 40px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 110px;
-            background-color: #121319;
-            border: 2px solid #282a36;
-            color: #f8f8f2;
-            padding: 15px;
-            box-sizing: border-box;
-            resize: none;
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-        }
-
-        /* Add a sharp, solid focus color rather than a soft blue glow */
-        textarea:focus {
-            border-color: #f1fa8c; /* Solid flat pale yellow */
-        }
-
-        /* 4. BUTTONS: Flat, blocky, styled like an old UI button or indie command menu */
-        button {
-            background-color: #282a36;
-            color: #ffffff;
-            border: 2px solid #44475a;
-            padding: 12px;
-            font-family: inherit;
-            font-weight: bold;
+        h1 { font-size: 1.35rem; color: #ffffff; margin: 0; letter-spacing: 1px; }
+        .sub { font-size: 0.75rem; color: #52586e; }
+        
+        .block-title {
+            color: #f1fa8c;
             font-size: 0.9rem;
-            cursor: pointer;
             text-transform: uppercase;
+            margin: 25px 0 10px 0;
             letter-spacing: 1px;
-            transition: all 0.15s ease;
-            align-self: flex-start; /* Keeps it naturally sized, not a massive stretched bar */
         }
-
-        button:hover {
-            background-color: #f1fa8c;
-            color: #282a36;
-            border-color: #f1fa8c;
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 9px 0;
+            border-bottom: 1px solid #141520;
+            font-size: 0.95rem;
         }
-
-        /* 5. CONTENT LOG: Organized like a timeline or real system log stream */
-        .log-section {
-            border-top: 2px dashed #282a36;
-            padding-top: 30px;
+        .lbl { color: #6e768f; }
+        .val { font-weight: bold; color: #50fa7b; }
+        
+        /* Tactical Advisory Alert Box styling */
+        .alert-box {
+            background-color: #12141f;
+            border: 1px dashed #f1fa8c;
+            padding: 15px;
+            margin-top: 15px;
         }
-
-        .log-title {
-            font-size: 0.9rem;
-            color: #6272a4;
-            margin-bottom: 20px;
+        .status-header {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ffb86c; /* Bright Amber */
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
-
-        .entry {
-            background-color: #121319;
-            border: 1px solid #1d2026;
-            padding: 16px;
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-            position: relative;
-        }
-                
-        .timestamp {
-            font-size: 0.75rem;
-            color: #6272a4;       
-            margin-top: 6px;      
-        }
-
-
-        /* Put a precise time/index stamp look in the corner of every message */
-        .entry::before {
-            content: "• MSG_LOG //";
-            font-size: 0.7rem;
-            color: #6272a4;
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .empty-state {
-            color: #44475a;
-            font-style: italic;
-            font-size: 0.9rem;
+        .advice-text {
+            font-size: 0.85rem;
+            color: #a9b2c3;
+            line-height: 1.5;
+            margin: 0;
         }
     </style>
 </head>
 <body>
 
-    <div class="workspace">
-        <h1>Cote Air Services</h1>
-        <div class="subtitle"></div>
+    <div class="console">
+        <header>
+            <h1>SOUTHDOWN_MET_ANALYSIS_PANEL</h1>
+            <div class="sub">STATION: PARHAM AIRFIELD // SECTOR: SOUTH DOWNS E-W CONSTRAINTS</div>
+        </header>
+
+        <!-- SECTION 1: HARD RIDGE ANALYSIS -->
+        <div class="block-title">// SOUTH DOWNS RIDGE DYNAMICS</div>
+        <div class="data-row">
+            <span class="lbl">Surface Airflow (Parham Grid)</span>
+            <span class="val">{{ telemetry.wind_surface }} KT @ {{ telemetry.dir_surface }}°</span>
+        </div>
         
-        <form method="POST" action="/">
-            <textarea name="user_message" placeholder="" required></textarea>
-            <button type="submit">Send message</button>
-        </form>
+        <div class="alert-box">
+            <div class="status-header">CURRENT SECTOR STATUS: {{ telemetry.ridge_status }}</div>
+            <p class="advice-text">• {{ telemetry.ridge_advice }}</p>
+        </div>
 
-        <div class="log-section">
-            <div class="log-title">Recent messages:</div>
-            
-            {% for msg in messages %}
-                <div class="entry">
-                    <div class="message-text">{{ msg.split('||')[0] }}</div>
-                    <div class="timestamp">{{ msg.split('||')[1] }}</div>
-                </div>
+        <!-- SECTION 2: THERMAL CONVECTION -->
+        <div class="block-title">// THERMAL SOARING METRICS</div>
+        <div class="data-row">
+            <span class="lbl">Thermal Stability Index (TI)</span>
+            <span class="val">{{ telemetry.thermal_idx }} <span class="sub">(Negative = Good Lift)</span></span>
+        </div>
+        <div class="data-row">
+            <span class="lbl">Boundary Layer Height (Top of Lift)</span>
+            <span class="val">{{ telemetry.top_lift }} FT AGL</span>
+        </div>
+        <div class="data-row">
+            <span class="lbl">Calculated Cloudbase (Sunc)</span>
+            <span class="val">{{ telemetry.cloudbase }} FT AGL</span>
+        </div>
 
-            {% else %}
-                <div class="empty-state">[ No data written to messages.txt yet ]</div>
-            {% endfor %}
+        <!-- SECTION 3: WAVE DYNAMICS -->
+        <div class="block-title">// WAVE SOARING METRICS</div>
+        <div class="data-row">
+            <span class="lbl">Winds Aloft (approx. 5,000 FT)</span>
+            <span class="val">{{ telemetry.wind_aloft }} KT @ {{ telemetry.dir_aloft }}°</span>
+        </div>
+        <div class="data-row" style="border: none;">
+            <span class="lbl">Lee-Wave Propagation Potential</span>
+            <span class="val" style="color: #ff79c6;">{{ telemetry.wave_potential }}</span>
         </div>
     </div>
 
 </body>
 </html>
 
-    <!-- HTML goes here. It controls WHAT is on the page (text, images, links) -->
-    <h1>Welcome to My Code</h1>
     <p>Work in progress</p>
 
 </body>
