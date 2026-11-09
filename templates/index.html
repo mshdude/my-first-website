@@ -106,6 +106,13 @@
             font-size: 0.95rem;
             position: relative;
         }
+                
+        .timestamp {
+            font-size: 0.75rem;
+            color: #6272a4;       
+            margin-top: 6px;      
+        }
+
 
         /* Put a precise time/index stamp look in the corner of every message */
         .entry::before {
@@ -138,7 +145,11 @@
             <div class="log-title">Recent messages:</div>
             
             {% for msg in messages %}
-                <div class="entry">{{ msg }}</div>
+                <div class="entry">
+                    <div class="message-text">{{ msg.split('||')[0] }}</div>
+                    <div class="timestamp">{{ msg.split('||')[1] }}</div>
+                </div>
+
             {% else %}
                 <div class="empty-state">[ No data written to messages.txt yet ]</div>
             {% endfor %}
