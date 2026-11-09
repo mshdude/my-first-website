@@ -48,7 +48,7 @@ def home():
         elif (160 <= dir_surface <= 220):
             ridge_status = "SOUTH FACE ACTIVE (MODERATE)"
             ridge_advice = f"Southerly flow ({dir_surface}°). Working orographic lift on the shallower southern slopes. Expect heavy sink on the northern drop-offs."
-        elif (240 <= dir_surface <= 280) or (070 <= dir_surface <= 110):
+        elif (240 <= dir_surface <= 280) or (70 <= dir_surface <= 110):
             ridge_status = "PARALLEL FLOW // DANGER ZONE"
             ridge_advice = f"Wind ({dir_surface}°) is blowing parallel to the East-West ridge lines. Yields zero slope lift. Anticipate severe mechanical turbulence and wind-shear on crosswind/final legs."
         else:
