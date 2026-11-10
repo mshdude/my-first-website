@@ -1,6 +1,7 @@
 import requests
 from flask import Flask, render_template
 from datetime import datetime
+import pytz
 
 app = Flask(__name__)
 
@@ -10,20 +11,27 @@ LONGITUDE = -0.474
 
 @app.route('/')
 def home():
-    # ONE SINGLE CLEAN URL LINK - Make sure this entire block is copied perfectly
-    url = f"https://api.open-meteo.com/v1/forecast?latitude={LATITUDE}&longitude={LONGITUDE}&hourly=temperature_2m,temperature_850hPa,boundary_layer_height,wind_speed_10m,wind_speed_850hPa,wind_direction_10m,wind_direction_850hPa,dew_point_2m&timezone=Europe%2FLondon"
-
+    # Clean, verified API string
+    url = f"https://open-meteo.com{LATITUDE}&longitude={LONGITUDE}&hourly=temperature_2m,temperature_850hPa,boundary_layer_height,wind_speed_10m,wind_speed_850hPa,wind_direction_10m,wind_direction_850hPa,dew_point_2m&timezone=Europe%2FLondon"
     
     try:
         response = requests.get(url)
         data = response.json()
         
-        # Pull the current hour index from the system clock
-        current_hour = datetime.now().hour
-        if current_hour < len(data['hourly']['temperature_2m']):
-            h = current_hour
-        else:
-            h = 12
+        if 'hourly' not in data:
+            raise KeyError(f"API Error Response: {data.get('reason', 'Unknown API Error')}")
+            
+        # Get exact current time in London to match Open-Meteo strings
+        london_tz = pytz.timezone('Europe/London')
+        now_london = datetime.now(london_tz)
+        current_hourly_str = now_london.strftime("%Y-%m-%dT%H:00")
+        
+        # Find the correct array index matching the current hour
+        try:
+            h = data['hourly']['time'].index(current_hourly_str)
+        except (ValueError, KeyError):
+            # Fallback to current local hour index (capped safely) if time strings mismatch
+            h = min(now_london.hour, len(data['hourly']['temperature_2m']) - 1)
             
         # 1. Thermal Calculations
         temp_surface = data['hourly']['temperature_2m'][h]
@@ -73,7 +81,7 @@ def home():
             "wave_potential": wave_potential,
             "ridge_status": ridge_status,
             "ridge_advice": ridge_advice,
-            "time_updated": f"{h:02d}:00"
+            "time_updated": now_london.strftime("%H:%02d")
         }
         
     except Exception as e:
@@ -85,10 +93,6 @@ def home():
         }
 
     return render_template('index.html', telemetry=soaring_data)
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
