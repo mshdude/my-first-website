@@ -12,6 +12,7 @@ LONGITUDE = -0.474
 def home():
     # ONE SINGLE CLEAN URL LINK - Make sure this entire block is copied perfectly
     url = f"https://open-meteo.com{LATITUDE}&longitude={LONGITUDE}&hourly=temperature_2m,temperature_850hPa,boundary_layer_height,wind_speed_10m,wind_speed_850hPa,wind_direction_10m,wind_direction_850hPa,dew_point_2m&timezone=Europe%2FLondon"
+
     
     try:
         response = requests.get(url)
