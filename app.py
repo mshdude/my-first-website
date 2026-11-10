@@ -4,27 +4,27 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# PARHAM AIRFIELD COORDINATES
+# PARHAM AIRFIELD GEOGRAPHIC COORDINATES
 LATITUDE = 50.923
 LONGITUDE = -0.474
 
 @app.route('/')
 def home():
-    # A completely clean, direct request line to the weather servers
+    # ONE SINGLE CLEAN URL LINK - Make sure this entire block is copied perfectly
     url = f"https://open-meteo.com{LATITUDE}&longitude={LONGITUDE}&hourly=temperature_2m,temperature_850hPa,boundary_layer_height,wind_speed_10m,wind_speed_850hPa,wind_direction_10m,wind_direction_850hPa,dew_point_2m&timezone=Europe%2FLondon"
     
     try:
         response = requests.get(url)
         data = response.json()
         
-        # Pull the current hour index from the clock
+        # Pull the current hour index from the system clock
         current_hour = datetime.now().hour
         if current_hour < len(data['hourly']['temperature_2m']):
             h = current_hour
         else:
             h = 12
             
-        # 1. Convective Soaring Values
+        # 1. Thermal Calculations
         temp_surface = data['hourly']['temperature_2m'][h]
         temp_850hPa = data['hourly']['temperature_850hPa'][h] 
         top_of_lift = data['hourly']['boundary_layer_height'][h]
