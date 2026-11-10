@@ -10,35 +10,38 @@ LONGITUDE = -0.474
 
 @app.route('/')
 def home():
-    # Fetching the core convective and wind profile grids from the weather models
-    url = f"https://open-meteo.com{LATITUDE}&longitude={LONGITUDE}&hourly=temperature_2m,temperature_850hPa,boundary_layer_height,wind_speed_10m,wind_speed_850hPa,wind_direction_10m,wind_direction_850hPa,dew_point_2m&timezone=Europe%2FLondon"
+    url = f"https://open-meteo.com{LATITUDE}&longitude={LONGITUDE}&hourly=temperature_2m,temperature_850hPa,boundary_layer_height,wind_speed_10m,wind_speed_850hPa,wind_direction_10m,wind_direction_850hPa,deadpoint_2m&timezone=Europe%2FLondon"
     
+    # Try fetching with dew_point_2m instead if api standard changes
+    url = url.replace("deadpoint_2m", "dew_point_2m")
+
     try:
         response = requests.get(url)
         data = response.json()
         
-        # AUTOMATIC HOUR SYNC: Find the current hour index matching the clock
+        # HOUR SYNC WITH FALLBACK: Use current hour, but fallback to 12 if data array is tricky at night
         current_hour = datetime.now().hour
-        h = current_hour if current_hour < len(data['hourly']['temperature_2m']) else 12
-        
+        if current_hour < len(data['hourly']['temperature_2m']):
+            h = current_hour
+        else:
+            h = 12
+            
         # 1. Thermal Calculations
         temp_surface = data['hourly']['temperature_2m'][h]
-        temp_850hPa = data['hourly']['temperature_850hPa'][h] # Approx 5,000 feet up
+        temp_850hPa = data['hourly']['temperature_850hPa'][h] 
         top_of_lift = data['hourly']['boundary_layer_height'][h]
         dew_point = data['hourly']['dew_point_2m'][h]
         
-        # Thermal Index (TI): Surface temp brought adiabatically minus upper air temp
         thermal_index = round(temp_850hPa - (temp_surface - 15), 1) 
-        # Standard pilot calculation for Cumulus cloudbase height in feet AGL
         cumulus_cloudbase = round((temp_surface - dew_point) * 400)
         
         # 2. Wind Vectors
-        wind_surface = round(data['hourly']['wind_speed_10m'][h] * 0.539957) # Convert km/h to Knots
-        wind_aloft = round(data['hourly']['wind_speed_850hPa'][h] * 0.539957)   # Knots
+        wind_surface = round(data['hourly']['wind_speed_10m'][h] * 0.539957) 
+        wind_aloft = round(data['hourly']['wind_speed_850hPa'][h] * 0.539957)   
         dir_surface = data['hourly']['wind_direction_10m'][h]
         dir_aloft = data['hourly']['wind_direction_850hPa'][h]
         
-        # 3. CRITICAL SOUTH DOWNS RIDGE VECTOR ALGORITHM
+        # 3. SOUTH DOWNS RIDGE VECTOR ALGORITHM
         if wind_surface < 8:
             ridge_status = "INACTIVE"
             ridge_advice = "Surface wind velocity is too low (<8 KT) to generate sustainable orographic lift. Stick to the winch or look for thermal triggers."
@@ -62,7 +65,7 @@ def home():
         
         soaring_data = {
             "thermal_idx": thermal_index,
-            "top_lift": round(top_of_lift * 3.28084), # Convert meters to feet
+            "top_lift": round(top_of_lift * 3.28084), 
             "cloudbase": cumulus_cloudbase if cumulus_cloudbase > 0 else "No Cloud / Blue Thermal Day",
             "wind_surface": wind_surface,
             "dir_surface": dir_surface,
@@ -79,10 +82,14 @@ def home():
             "thermal_idx": "--", "top_lift": "--", "cloudbase": "--", 
             "wind_surface": "--", "dir_surface": "--", "wind_aloft": "--", "dir_aloft": "--", 
             "wave_potential": "ERROR", "ridge_status": "OFFLINE", 
-            "ridge_advice": "Unable to verify meteorological streams.", "time_updated": "--:--"
+            "ridge_advice": f"Unable to verify meteorological streams. Details: {str(e)}", "time_updated": "--:--"
         }
 
     return render_template('index.html', telemetry=soaring_data)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
