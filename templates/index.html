@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Southdown Gliding Club - Airfield Status</title>
-    <!-- Google Font Import (Change 'Montserrat' here to try other fonts) -->
+    <title>SGC Airfield Status</title>
     <link href="https://googleapis.com" rel="stylesheet">
     
     <style>
@@ -13,7 +12,7 @@
            ========================================================= */
         :root {
             --main-font: 'Montserrat', sans-serif;
-            --card-bg-color: rgba(15, 23, 42, 0.80); /* Dark navy, 80% opaque */
+            --card-bg-color: rgba(15, 23, 42, 0.82); /* Dark navy, 82% opaque */
             --text-color: #ffffff;
             --subtext-color: #cbd5e1;
         }
@@ -26,7 +25,7 @@
             color: var(--text-color);
 
             /* BACKGROUND IMAGE SETTINGS */
-            background-image: url("{{ url_for('static', filename='background.jpg') }}");
+            background-image: url("{{ url_for(filename='background.jpg') }}");
             background-size: cover;       /* Zooms slightly to fill entire screen */
             background-position: center;  /* Keeps the glider centered */
             background-repeat: no-repeat;
@@ -34,14 +33,14 @@
 
             /* POSITIONING OF THE STATUS BOX ON SCREEN */
             display: flex;
-            justify-content: center;      /* Horizontal: 'flex-start' (left), 'center', 'flex-end' (right) */
-            align-items: center;          /* Vertical: 'flex-start' (top), 'center', 'flex-end' (bottom) */
+            justify-content: center;      /* Left: flex-start | Center: center | Right: flex-end */
+            align-items: center;          /* Top: flex-start  | Center: center | Bottom: flex-end */
             box-sizing: border-box;
         }
 
         .status-card {
             background-color: var(--card-bg-color);
-            backdrop-filter: blur(8px);   /* Frosted glass blur effect */
+            backdrop-filter: blur(8px);
             padding: 40px 30px;
             border-radius: 16px;
             max-width: 550px;
@@ -63,7 +62,7 @@
         .status-badge {
             background-color: {{ state.color }};
             color: #ffffff;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 900;
             padding: 15px 25px;
             border-radius: 8px;
@@ -76,16 +75,71 @@
             font-size: 1.1rem;
             line-height: 1.6;
             color: var(--text-color);
-            margin: 0 0 25px 0;
+            margin: 0 0 20px 0;
         }
 
-        .admin-link {
-            font-size: 0.75rem;
+        /* HIDDEN ADMIN PANEL STYLES */
+        .toggle-btn {
+            background: none;
+            border: none;
             color: var(--subtext-color);
-            text-decoration: none;
+            font-family: var(--main-font);
+            font-size: 0.75rem;
+            cursor: pointer;
             opacity: 0.6;
+            text-decoration: underline;
         }
-        .admin-link:hover { opacity: 1; }
+        .toggle-btn:hover { opacity: 1; }
+
+        .admin-drawer {
+            display: {% if error %}block{% else %}none{% endif %};
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: left;
+        }
+
+        .admin-drawer label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin: 12px 0 5px 0;
+            color: var(--subtext-color);
+        }
+
+        .admin-drawer select, 
+        .admin-drawer textarea, 
+        .admin-drawer input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            font-family: var(--main-font);
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background-color: #2563eb;
+            color: white;
+            font-family: var(--main-font);
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .submit-btn:hover { background-color: #1d4ed8; }
+
+        .error-msg {
+            color: #f87171;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -101,8 +155,41 @@
             {{ state.message }}
         </p>
 
-        <a href="/admin" class="admin-link">Duty Instructor Login</a>
+        <!-- Discreet button to open the password updater -->
+        <button class="toggle-btn" onclick="toggleAdmin()">Duty Instructor Update</button>
+
+        <!-- Hidden Password-Protected Update Form -->
+        <div id="adminPanel" class="admin-drawer">
+            {% if error %}
+                <div class="error-msg">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST">
+                <label>Select Airfield Status</label>
+                <select name="status_choice">
+                    <option value="open">OPEN - Normal Operations (Green)</option>
+                    <option value="delayed">STANDBY - May Open Later (Amber)</option>
+                    <option value="restricted">OPEN - Restricted / Solo Only (Blue)</option>
+                    <option value="closed">CLOSED - No Flying (Red)</option>
+                </select>
+
+                <label>Daily Briefing / Notes</label>
+                <textarea name="message" rows="2">{{ state.message }}</textarea>
+
+                <label>Instructor Password</label>
+                <input type="password" name="password" placeholder="Enter password..." required>
+
+                <button type="submit" class="submit-btn">Publish Live Update</button>
+            </form>
+        </div>
     </div>
+
+    <script>
+        function toggleAdmin() {
+            var panel = document.getElementById("adminPanel");
+            panel.style.display = (panel.style.display === "none" || panel.style.display === "") ? "block" : "none";
+        }
+    </script>
 
 </body>
 </html>
