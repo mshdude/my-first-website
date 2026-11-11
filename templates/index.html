@@ -5,39 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGC Airfield Status</title>
     <link href="https://googleapis.com" rel="stylesheet">
-    
     <style>
-        /* =========================================================
-           CUSTOMIZATION ZONE: EDIT FONTS, COLOURS & POSITION HERE
-           ========================================================= */
         :root {
             --main-font: 'Montserrat', sans-serif;
-            --card-bg-color: rgba(15, 23, 42, 0.85); /* Dark navy frosted glass */
+            --card-bg-color: rgba(15, 23, 42, 0.85);
             --text-color: #ffffff;
             --subtext-color: #cbd5e1;
         }
-
         body {
             margin: 0;
             padding: 25px 15px;
             min-height: 100vh;
             font-family: var(--main-font);
             color: var(--text-color);
-
-            /* BACKGROUND IMAGE SETTINGS */
             background-image: url("/background.jpg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-
-            /* POSITIONING ON SCREEN */
             display: flex;
             justify-content: center;
             align-items: center;
             box-sizing: border-box;
         }
-
         .card {
             background-color: var(--card-bg-color);
             backdrop-filter: blur(10px);
@@ -48,11 +38,7 @@
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
             border-top: 8px solid {{ state.color }};
         }
-
-        .public-view {
-            text-align: center;
-        }
-
+        .public-view { text-align: center; }
         .club-name {
             font-size: 0.85rem;
             letter-spacing: 3px;
@@ -61,7 +47,6 @@
             margin-bottom: 15px;
             font-weight: 700;
         }
-
         .status-badge {
             background-color: {{ state.color }};
             color: #ffffff;
@@ -73,21 +58,17 @@
             margin: 10px 0 18px 0;
             letter-spacing: 0.5px;
         }
-
         .status-message {
             font-size: 1.1rem;
             line-height: 1.6;
             color: var(--text-color);
             margin: 0 0 15px 0;
         }
-
         .last-updated {
             font-size: 0.8rem;
             color: var(--subtext-color);
             margin-bottom: 25px;
         }
-
-        /* PASSWORD GATE BOX */
         .login-toggle {
             background: none;
             border: none;
@@ -99,20 +80,17 @@
             text-decoration: underline;
         }
         .login-toggle:hover { opacity: 1; }
-
         .password-box {
             display: {% if error %}block{% else %}none{% endif %};
             margin-top: 18px;
             padding-top: 18px;
             border-top: 1px solid rgba(255, 255, 255, 0.15);
         }
-
         .password-row {
             display: flex;
             gap: 10px;
             justify-content: center;
         }
-
         input[type="password"], select, textarea {
             padding: 10px 12px;
             border-radius: 6px;
@@ -121,7 +99,6 @@
             font-size: 0.9rem;
             box-sizing: border-box;
         }
-
         .btn {
             padding: 10px 18px;
             background-color: #2563eb;
@@ -137,15 +114,12 @@
         .btn:hover { background-color: #1d4ed8; }
         .btn-secondary { background-color: #475569; }
         .btn-secondary:hover { background-color: #334155; }
-
         .error-msg {
             color: #f87171;
             font-size: 0.85rem;
             font-weight: 700;
             margin-bottom: 10px;
         }
-
-        /* ADMIN PAGE STYLES */
         .admin-header {
             display: flex;
             justify-content: space-between;
@@ -154,23 +128,14 @@
             padding-bottom: 15px;
             margin-bottom: 20px;
         }
-
         .admin-header h2 {
             margin: 0;
             font-size: 1.2rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
-        .admin-nav {
-            display: flex;
-            gap: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
+        .admin-nav { display: flex; gap: 8px; }
+        .form-group { margin-bottom: 15px; }
         .form-group label {
             display: block;
             font-size: 0.8rem;
@@ -179,18 +144,12 @@
             margin-bottom: 6px;
             text-transform: uppercase;
         }
-
-        .form-group select, .form-group textarea {
-            width: 100%;
-        }
-
-        /* 2-WEEK HISTORY LOG */
+        .form-group select, .form-group textarea { width: 100%; }
         .log-section {
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.15);
         }
-
         .log-title {
             font-size: 0.85rem;
             font-weight: 700;
@@ -199,7 +158,6 @@
             color: var(--subtext-color);
             margin-bottom: 12px;
         }
-
         .log-list {
             max-height: 260px;
             overflow-y: auto;
@@ -208,14 +166,12 @@
             gap: 10px;
             padding-right: 5px;
         }
-
         .log-item {
             background: rgba(255, 255, 255, 0.07);
             padding: 12px 15px;
             border-radius: 8px;
             border-left: 5px solid #64748b;
         }
-
         .log-top {
             display: flex;
             justify-content: space-between;
@@ -224,46 +180,22 @@
             gap: 5px;
             margin-bottom: 5px;
         }
-
-        .log-status {
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .log-time {
-            font-size: 0.75rem;
-            color: var(--subtext-color);
-        }
-
-        .log-msg {
-            font-size: 0.85rem;
-            color: #e2e8f0;
-            margin: 0;
-        }
+        .log-status { font-weight: 700; font-size: 0.9rem; }
+        .log-time { font-size: 0.75rem; color: var(--subtext-color); }
+        .log-msg { font-size: 0.85rem; color: #e2e8f0; margin: 0; }
     </style>
 </head>
 <body>
-
     <div class="card">
         {% if page == "public" %}
-        <!-- =========================================================
-             PUBLIC STATUS VIEW
-             ========================================================= -->
         <div class="public-view">
             <div class="club-name">Southdown Gliding Club • Parham Airfield</div>
-            
-            <div class="status-badge">
-                {{ state.status }}
-            </div>
-            
+            <div class="status-badge">{{ state.status }}</div>
             {% if state.message %}
             <p class="status-message">{{ state.message }}</p>
             {% endif %}
-
             <div class="last-updated">Last updated: {{ state.updated_at }}</div>
-
             <button class="login-toggle" onclick="togglePassword()">Instructor Admin Login</button>
-
             <div id="passwordGate" class="password-box">
                 {% if error %}
                     <div class="error-msg">{{ error }}</div>
@@ -274,11 +206,7 @@
                 </form>
             </div>
         </div>
-
         {% elif page == "admin" %}
-        <!-- =========================================================
-             DEDICATED ADMIN CONTROL & 2-WEEK LOG PAGE
-             ========================================================= -->
         <div class="admin-header">
             <h2>Airfield Admin Panel</h2>
             <div class="admin-nav">
@@ -286,7 +214,6 @@
                 <a href="/logout" class="btn btn-secondary">Lock</a>
             </div>
         </div>
-
         <form method="POST">
             <div class="form-group">
                 <label>Set New Airfield Status</label>
@@ -298,18 +225,14 @@
                     {% endfor %}
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Briefing Notes / Reason (Optional)</label>
-                <textarea name="message" rows="2" placeholder="e.g. Runway 29 active, crosswind limit 15kt...">{{ state.message }}</textarea>
+                <textarea name="message" rows="2" placeholder="e.g. Runway 29 active...">{{ state.message }}</textarea>
             </div>
-
             <button type="submit" class="btn" style="width: 100%; padding: 12px;">Publish Status Update</button>
         </form>
-
         <div class="log-section">
             <div class="log-title">Status Change Log (Last 14 Days)</div>
-            
             {% if history %}
                 <div class="log-list">
                     {% for item in history %}
@@ -318,3 +241,23 @@
                                 <span class="log-status" style="color: {{ item.color }};">{{ item.status }}</span>
                                 <span class="log-time">{{ item.timestamp }}</span>
                             </div>
+                            {% if item.message %}
+                                <p class="log-msg">{{ item.message }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="font-size: 0.85rem; color: var(--subtext-color);">No status changes recorded in the last 14 days.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        function togglePassword() {
+            var box = document.getElementById("passwordGate");
+            box.style.display = (box.style.display === "none" || box.style.display === "") ? "block" : "none";
+        }
+    </script>
+</body>
+</html>
