@@ -11,16 +11,16 @@ app.secret_key = "sgc_parham_secret_key_change_me"  # Required for secure admin 
 ADMIN_PASSWORD = "jox@parham26!"
 DATA_FILE = "status_data.json"
 UK_TZ = pytz.timezone("Europe/London")
-
-# Your 7 custom status modes and logical colours
+# Your custom status modes and colours
 STATUS_MODES = {
-    "open": ("Open", "#16a34a"),                                     # Green
-    "open_winch": ("Open - winch only", "#15803d"),                  # Forest Green
-    "open_xc": ("Open for cross country", "#0284c7"),                # Sky Blue
-    "delayed": ("Delayed start", "#d97706"),                         # Amber
-    "finished_early": ("Finished early", "#7c3aed"),                 # Purple
-    "closed_notice": ("Closed until further notice", "#ea580c"),     # Deep Orange
-    "closed": ("Closed", "#dc2626")                                  # Red
+    "open": ("Open", "#16a34a"),                                             # Green
+    "open_winch": ("Open - winch only", "#16a34a"),                          # Green
+    "open_xc": ("Open for cross country", "#16a34a"),                        # Gree
+    "delayed": ("Delayed start", "#d97706"),                                 # Amber
+    "weather_hold": ("Closed temporarily - awaiting weather changes", "#d97706"),        # Yellow/Gold
+    "finished_early": ("Finished early", "#dc2626"),                         # Red
+    "closed_notice": ("Closed until further notice", "#dc2626"),             # Red
+    "closed": ("Closed", "#dc2626")                                          # Red
 }
 
 def load_data():
