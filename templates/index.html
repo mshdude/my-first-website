@@ -3,158 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGC Soaring Dashboard</title>
+    <title>Southdown Gliding Club - Airfield Status</title>
+    <!-- Google Font Import (Change 'Montserrat' here to try other fonts) -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    
     <style>
-        /* Matches the clean corporate/aviation palette of southdowngliding.co.uk */
+        /* =========================================================
+           CUSTOMIZATION ZONE: EDIT FONTS, COLOURS & POSITION HERE
+           ========================================================= */
+        :root {
+            --main-font: 'Montserrat', sans-serif;
+            --card-bg-color: rgba(15, 23, 42, 0.80); /* Dark navy, 80% opaque */
+            --text-color: #ffffff;
+            --subtext-color: #cbd5e1;
+        }
+
         body {
-            background-color: #f4f6f9;
-            color: #1e293b;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 40px 15px;
-        }
-
-        .container {
-            max-width: 650px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            border-top: 6px solid #0056b3; /* SGC Primary Royal Blue Stripe */
-            overflow: hidden;
-        }
-
-        header {
-            background-color: #0b1a30; /* SGC Deep Navy Dark Background */
-            color: #ffffff;
-            padding: 25px 20px;
-        }
-
-        header h1 {
-            font-size: 1.4rem;
-            margin: 0;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .station-subtitle {
-            font-size: 0.8rem;
-            color: #93c5fd; /* Sky Blue Accent */
-            margin-top: 4px;
-            font-weight: 600;
-        }
-
-        .panel-content {
             padding: 20px;
-        }
+            min-height: 100vh;
+            font-family: var(--main-font);
+            color: var(--text-color);
 
-        .block-header {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #0056b3;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: 25px 0 10px 0;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 4px;
-        }
+            /* BACKGROUND IMAGE SETTINGS */
+            background-image: url("{{ url_for('static', filename='background.jpg') }}");
+            background-size: cover;       /* Zooms slightly to fill entire screen */
+            background-position: center;  /* Keeps the glider centered */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
 
-        .metric-row {
+            /* POSITIONING OF THE STATUS BOX ON SCREEN */
             display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.95rem;
+            justify-content: center;      /* Horizontal: 'flex-start' (left), 'center', 'flex-end' (right) */
+            align-items: center;          /* Vertical: 'flex-start' (top), 'center', 'flex-end' (bottom) */
+            box-sizing: border-box;
         }
 
-        .metric-label {
-            color: #64748b;
-            font-weight: 500;
+        .status-card {
+            background-color: var(--card-bg-color);
+            backdrop-filter: blur(8px);   /* Frosted glass blur effect */
+            padding: 40px 30px;
+            border-radius: 16px;
+            max-width: 550px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-top: 8px solid {{ state.color }};
         }
 
-        .metric-value {
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        /* Tactical Advisory Notification Window Box */
-        .advisory-card {
-            background-color: #f8fafc;
-            border-left: 4px solid #3b82f6; /* Slate Blue Accent line */
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 0 6px 6px 0;
+        .club-name {
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--subtext-color);
+            margin-bottom: 15px;
+            font-weight: 700;
         }
 
         .status-badge {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #1e3a8a;
-            text-transform: uppercase;
-            margin-bottom: 5px;
+            background-color: {{ state.color }};
+            color: #ffffff;
+            font-size: 1.6rem;
+            font-weight: 900;
+            padding: 15px 25px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 10px 0 20px 0;
+            letter-spacing: 1px;
         }
 
-        .advice-body {
-            font-size: 0.85rem;
-            color: #475569;
-            line-height: 1.5;
-            margin: 0;
+        .status-message {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0 0 25px 0;
         }
 
-        .wave-alert {
-            color: #2563eb;
-            font-weight: 700;
+        .admin-link {
+            font-size: 0.75rem;
+            color: var(--subtext-color);
+            text-decoration: none;
+            opacity: 0.6;
         }
+        .admin-link:hover { opacity: 1; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Southdown Met Analysis Panel</h1>
-            <div class="station-subtitle">STATION: PARHAM AIRFIELD // MODEL UPDATE: {{ telemetry.time_updated }} GMT</div>
-        </header>
-
-        <div class="panel-content">
-            <!-- RIDGE MONITOR -->
-            <div class="block-header">South Downs Ridge Monitor</div>
-            <div class="metric-row">
-                <span class="metric-label">Surface Winds (10M AGL)</span>
-                <span class="metric-value">{{ telemetry.wind_surface }} KT @ {{ telemetry.dir_surface }}°</span>
-            </div>
-            
-            <div class="advisory-card">
-                <div class="status-badge">Ridge System: {{ telemetry.ridge_status }}</div>
-                <p class="advice-body">{{ telemetry.ridge_advice }}</p>
-            </div>
-
-            <!-- THERMAL OUTLOOK -->
-            <div class="block-header">Convective Thermal Lift</div>
-            <div class="metric-row">
-                <span class="metric-label">Thermal Index (TI at 5,000 FT)</span>
-                <span class="metric-value">{{ telemetry.thermal_idx }}</span>
-            </div>
-            <div class="metric-row">
-                <span class="metric-label">Top of Usable Lift</span>
-                <span class="metric-value">{{ telemetry.top_lift }} FT AGL</span>
-            </div>
-            <div class="metric-row">
-                <span class="metric-label">Estimated Cumulus Cloudbase</span>
-                <span class="metric-value">{{ telemetry.cloudbase }}</span>
-            </div>
-
-            <!-- WAVE METRICS -->
-            <div class="block-header">Wave & Upper Air Profiler</div>
-            <div class="metric-row">
-                <span class="metric-label">Upper Winds (5,000 FT)</span>
-                <span class="metric-value">{{ telemetry.wind_aloft }} KT @ {{ telemetry.dir_aloft }}°</span>
-            </div>
-            <div class="metric-row" style="border: none;">
-                <span class="metric-label">Lee-Wave Propagation Status</span>
-                <span class="metric-value wave-alert">{{ telemetry.wave_potential }}</span>
-            </div>
+    <div class="status-card">
+        <div class="club-name">Southdown Gliding Club • Parham Airfield</div>
+        
+        <div class="status-badge">
+            {{ state.status }}
         </div>
+        
+        <p class="status-message">
+            {{ state.message }}
+        </p>
+
+        <a href="/admin" class="admin-link">Duty Instructor Login</a>
     </div>
 
 </body>
