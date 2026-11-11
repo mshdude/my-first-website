@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 # CHANGE THIS PASSWORD for updating the status on the website
-ADMIN_PASSWORD = "parham2026"
+ADMIN_PASSWORD = "jox@parham2!"
 
 # Default status when the server boots up
 airfield_state = {
