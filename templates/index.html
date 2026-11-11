@@ -12,46 +12,49 @@
            ========================================================= */
         :root {
             --main-font: 'Montserrat', sans-serif;
-            --card-bg-color: rgba(15, 23, 42, 0.82); /* Dark navy, 82% opaque */
+            --card-bg-color: rgba(15, 23, 42, 0.85); /* Dark navy frosted glass */
             --text-color: #ffffff;
             --subtext-color: #cbd5e1;
         }
 
         body {
             margin: 0;
-            padding: 20px;
+            padding: 25px 15px;
             min-height: 100vh;
             font-family: var(--main-font);
             color: var(--text-color);
 
             /* BACKGROUND IMAGE SETTINGS */
-            background-image: url("{{ url_for('static', filename='background.jpg') }}");
-            background-size: cover;       /* Zooms slightly to fill entire screen */
-            background-position: center;  /* Keeps the glider centered */
+            background-image: url("/background.jpg");
+            background-size: cover;
+            background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
 
-            /* POSITIONING OF THE STATUS BOX ON SCREEN */
+            /* POSITIONING ON SCREEN */
             display: flex;
-            justify-content: center;      /* Left: flex-start | Center: center | Right: flex-end */
-            align-items: center;          /* Top: flex-start  | Center: center | Bottom: flex-end */
+            justify-content: center;
+            align-items: center;
             box-sizing: border-box;
         }
 
-        .status-card {
+        .card {
             background-color: var(--card-bg-color);
-            backdrop-filter: blur(8px);
-            padding: 40px 30px;
+            backdrop-filter: blur(10px);
+            padding: 35px 30px;
             border-radius: 16px;
-            max-width: 550px;
+            max-width: 600px;
             width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
             border-top: 8px solid {{ state.color }};
         }
 
+        .public-view {
+            text-align: center;
+        }
+
         .club-name {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--subtext-color);
@@ -64,54 +67,54 @@
             color: #ffffff;
             font-size: 1.5rem;
             font-weight: 900;
-            padding: 15px 25px;
+            padding: 15px 28px;
             border-radius: 8px;
             display: inline-block;
-            margin: 10px 0 20px 0;
-            letter-spacing: 1px;
+            margin: 10px 0 18px 0;
+            letter-spacing: 0.5px;
         }
 
         .status-message {
             font-size: 1.1rem;
             line-height: 1.6;
             color: var(--text-color);
-            margin: 0 0 20px 0;
+            margin: 0 0 15px 0;
         }
 
-        /* HIDDEN ADMIN PANEL STYLES */
-        .toggle-btn {
+        .last-updated {
+            font-size: 0.8rem;
+            color: var(--subtext-color);
+            margin-bottom: 25px;
+        }
+
+        /* PASSWORD GATE BOX */
+        .login-toggle {
             background: none;
             border: none;
             color: var(--subtext-color);
             font-family: var(--main-font);
             font-size: 0.75rem;
             cursor: pointer;
-            opacity: 0.6;
+            opacity: 0.65;
             text-decoration: underline;
         }
-        .toggle-btn:hover { opacity: 1; }
+        .login-toggle:hover { opacity: 1; }
 
-        .admin-drawer {
+        .password-box {
             display: {% if error %}block{% else %}none{% endif %};
-            margin-top: 20px;
-            padding-top: 20px;
+            margin-top: 18px;
+            padding-top: 18px;
             border-top: 1px solid rgba(255, 255, 255, 0.15);
-            text-align: left;
         }
 
-        .admin-drawer label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin: 12px 0 5px 0;
-            color: var(--subtext-color);
+        .password-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
         }
 
-        .admin-drawer select, 
-        .admin-drawer textarea, 
-        .admin-drawer input {
-            width: 100%;
-            padding: 10px;
+        input[type="password"], select, textarea {
+            padding: 10px 12px;
             border-radius: 6px;
             border: none;
             font-family: var(--main-font);
@@ -119,10 +122,8 @@
             box-sizing: border-box;
         }
 
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-            margin-top: 15px;
+        .btn {
+            padding: 10px 18px;
             background-color: #2563eb;
             color: white;
             font-family: var(--main-font);
@@ -130,66 +131,190 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
+            text-decoration: none;
+            font-size: 0.85rem;
         }
-        .submit-btn:hover { background-color: #1d4ed8; }
+        .btn:hover { background-color: #1d4ed8; }
+        .btn-secondary { background-color: #475569; }
+        .btn-secondary:hover { background-color: #334155; }
 
         .error-msg {
             color: #f87171;
             font-size: 0.85rem;
             font-weight: 700;
             margin-bottom: 10px;
-            text-align: center;
+        }
+
+        /* ADMIN PAGE STYLES */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .admin-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--subtext-color);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .form-group select, .form-group textarea {
+            width: 100%;
+        }
+
+        /* 2-WEEK HISTORY LOG */
+        .log-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .log-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--subtext-color);
+            margin-bottom: 12px;
+        }
+
+        .log-list {
+            max-height: 260px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 5px;
+        }
+
+        .log-item {
+            background: rgba(255, 255, 255, 0.07);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 5px solid #64748b;
+        }
+
+        .log-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
+        .log-status {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .log-time {
+            font-size: 0.75rem;
+            color: var(--subtext-color);
+        }
+
+        .log-msg {
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            margin: 0;
         }
     </style>
 </head>
 <body>
 
-    <div class="status-card">
-        <div class="club-name">Southdown Gliding Club • Parham Airfield</div>
-        
-        <div class="status-badge">
-            {{ state.status }}
-        </div>
-        
-        <p class="status-message">
-            {{ state.message }}
-        </p>
-
-        <!-- Discreet button to open the password updater -->
-        <button class="toggle-btn" onclick="toggleAdmin()">Duty Instructor Update</button>
-
-        <!-- Hidden Password-Protected Update Form -->
-        <div id="adminPanel" class="admin-drawer">
-            {% if error %}
-                <div class="error-msg">{{ error }}</div>
+    <div class="card">
+        {% if page == "public" %}
+        <!-- =========================================================
+             PUBLIC STATUS VIEW
+             ========================================================= -->
+        <div class="public-view">
+            <div class="club-name">Southdown Gliding Club • Parham Airfield</div>
+            
+            <div class="status-badge">
+                {{ state.status }}
+            </div>
+            
+            {% if state.message %}
+            <p class="status-message">{{ state.message }}</p>
             {% endif %}
 
-            <form method="POST">
-                <label>Select Airfield Status</label>
-                <select name="status_choice">
-                    <option value="open">OPEN - Normal Operations (Green)</option>
-                    <option value="delayed">STANDBY - May Open Later (Amber)</option>
-                    <option value="restricted">OPEN - Restricted / Solo Only (Blue)</option>
-                    <option value="closed">CLOSED - No Flying (Red)</option>
-                </select>
+            <div class="last-updated">Last updated: {{ state.updated_at }}</div>
 
-                <label>Daily Briefing / Notes</label>
-                <textarea name="message" rows="2">{{ state.message }}</textarea>
+            <button class="login-toggle" onclick="togglePassword()">Instructor Admin Login</button>
 
-                <label>Instructor Password</label>
-                <input type="password" name="password" placeholder="Enter password..." required>
-
-                <button type="submit" class="submit-btn">Publish Live Update</button>
-            </form>
+            <div id="passwordGate" class="password-box">
+                {% if error %}
+                    <div class="error-msg">{{ error }}</div>
+                {% endif %}
+                <form method="POST" class="password-row">
+                    <input type="password" name="password" placeholder="Enter admin password..." required>
+                    <button type="submit" class="btn">Enter Admin</button>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <script>
-        function toggleAdmin() {
-            var panel = document.getElementById("adminPanel");
-            panel.style.display = (panel.style.display === "none" || panel.style.display === "") ? "block" : "none";
-        }
-    </script>
+        {% elif page == "admin" %}
+        <!-- =========================================================
+             DEDICATED ADMIN CONTROL & 2-WEEK LOG PAGE
+             ========================================================= -->
+        <div class="admin-header">
+            <h2>Airfield Admin Panel</h2>
+            <div class="admin-nav">
+                <a href="/" class="btn btn-secondary">View Live Site</a>
+                <a href="/logout" class="btn btn-secondary">Lock</a>
+            </div>
+        </div>
 
-</body>
-</html>
+        <form method="POST">
+            <div class="form-group">
+                <label>Set New Airfield Status</label>
+                <select name="status_choice">
+                    {% for key, val in modes.items() %}
+                        <option value="{{ key }}" {% if val[0] == state.status %}selected{% endif %}>
+                            {{ val[0] }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Briefing Notes / Reason (Optional)</label>
+                <textarea name="message" rows="2" placeholder="e.g. Runway 29 active, crosswind limit 15kt...">{{ state.message }}</textarea>
+            </div>
+
+            <button type="submit" class="btn" style="width: 100%; padding: 12px;">Publish Status Update</button>
+        </form>
+
+        <div class="log-section">
+            <div class="log-title">Status Change Log (Last 14 Days)</div>
+            
+            {% if history %}
+                <div class="log-list">
+                    {% for item in history %}
+                        <div class="log-item" style="border-left-color: {{ item.color }};">
+                            <div class="log-top">
+                                <span class="log-status" style="color: {{ item.color }};">{{ item.status }}</span>
+                                <span class="log-time">{{ item.timestamp }}</span>
+                            </div>
