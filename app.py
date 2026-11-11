@@ -2,31 +2,26 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
-# CHANGE THIS PASSWORD so only club staff can update the airfield status
+# CHANGE THIS PASSWORD for updating the status on the website
 ADMIN_PASSWORD = "parham2026"
 
 # Default status when the server boots up
 airfield_state = {
     "status": "OPEN - NORMAL OPERATIONS",
     "color": "#16a34a",  # Green
-    "message": "Winch and aerotow launches active. Check in at the launch point.",
-    "updated_by": "Duty Instructor"
+    "message": "Winch and aerotow launches active. Check in at the launch point."
 }
 
-# Preset status levels for quick updating
+# Preset status levels and colours
 STATUS_PRESETS = {
-    "open": ("OPEN - NORMAL OPERATIONS", "#16a34a"),       # Green
-    "delayed": ("STANDBY - MAY OPEN LATER", "#d97706"),    # Amber/Orange
-    "restricted": ("OPEN - RESTRICTED / SOLO ONLY", "#2563eb"), # Blue
-    "closed": ("CLOSED - NO FLYING", "#dc2626")            # Red
+    "open": ("OPEN - NORMAL OPERATIONS", "#16a34a"),             # Green
+    "delayed": ("STANDBY - MAY OPEN LATER", "#d97706"),          # Amber
+    "restricted": ("OPEN - RESTRICTED / SOLO ONLY", "#2563eb"),  # Blue
+    "closed": ("CLOSED - NO FLYING", "#dc2626")                  # Red
 }
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('index.html', state=airfield_state)
-
-@app.route('/admin', methods=['GET', 'POST'])
-def admin():
     error = None
     if request.method == 'POST':
         password = request.form.get('password')
@@ -40,9 +35,9 @@ def admin():
             airfield_state["message"] = custom_msg
             return redirect(url_for('home'))
         else:
-            error = "Incorrect password."
-            
-    return render_template('admin.html', state=airfield_state, error=error)
+            error = "Incorrect password. Status was not updated."
+
+    return render_template('index.html', state=airfield_state, error=error)
 
 if __name__ == '__main__':
     app.run(debug=True)
