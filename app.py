@@ -163,10 +163,19 @@ def get_weather_summary():
 
 @app.route('/background.jpg')
 def background_image():
-    for pattern in ['background.jpg', 'background.JPG', 'background.jpeg', 'background.png', 'background.PNG', '*.jpg', '*.png']:
+    for pattern in [
+        'background.jpg',
+        'background.JPG',
+        'background.jpeg',
+        'background.JPEG',
+        'background.png',
+        'background.PNG'
+    ]:
         matches = glob.glob(pattern)
+
         if matches:
-            return send_from_directory('.', matches)
+            return send_from_directory('.', matches[0])
+
     return "Image not found", 404
 
 @app.route('/', methods=['GET', 'POST'])
