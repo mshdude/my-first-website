@@ -28,6 +28,13 @@ STATUS_MODES = {
     "closed_notice": ("Closed until further notice", "#dc2626"),             # Red
     "closed": ("Closed", "#dc2626")                                          # Red
 }
+TOMORROW_MODES = {
+    "planned_open": ("Planned Open", "#16a34a"),
+    "likely_open": ("Likely Open", "#65a30d"),
+    "weather_dependent": ("Weather Dependent", "#eab308"),
+    "decision_pending": ("Decision Pending", "#d97706"),
+    "planned_closed": ("Planned Closed", "#dc2626")
+}
 
 def github_load():
     if not (GITHUB_TOKEN and GITHUB_REPO):
