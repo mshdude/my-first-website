@@ -263,6 +263,7 @@ def admin():
         'index.html',
         page="admin",
         state=data["current"],
+        tomorrow=data["tomorrow"],
         history=data["history"],
         modes=STATUS_MODES
     )
