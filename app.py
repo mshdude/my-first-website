@@ -232,6 +232,9 @@ def admin():
     if request.method == 'POST':
         mode_key = request.form.get('status_choice')
         custom_msg = request.form.get('message', '').strip()
+
+        tomorrow_key = request.form.get('tomorrow_status')
+        tomorrow_msg = request.form.get('tomorrow_message', '').strip()
         title, color = STATUS_MODES.get(mode_key, ("Open", "#16a34a"))
 
         now_uk = datetime.now(UK_TZ)
@@ -246,6 +249,17 @@ def admin():
         }
 
         data["current"] = new_status
+        tom_title, tom_color = TOMORROW_MODES.get(
+            tomorrow_key,
+            ("Decision Pending", "#d97706")
+        )
+
+        data["tomorrow"] = {
+            "status": tom_title,
+            "color": tom_color,
+            "message": tomorrow_msg,
+            "updated_at": formatted_time
+        }
         data["history"].insert(0, {
             "status": title,
             "color": color,
