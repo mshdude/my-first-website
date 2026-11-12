@@ -88,7 +88,7 @@ def load_data():
 
     # AUTOMATIC 5:00 PM (17:00) DAILY CLOSURE CHECK
     now_uk = datetime.now(UK_TZ)
-    today_5pm = now_uk.replace(hour=now_uk.hour, minute=now_uk.minute + 1, second=0, microsecond=0)
+    today_5pm = now_uk.replace(hour=17, minute=0, second=0, microsecond=0)
     last_iso = data.get("current", {}).get("iso_time", "")
 
     try:
