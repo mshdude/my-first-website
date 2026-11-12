@@ -129,7 +129,13 @@ def load_data():
                 "iso_time": today_5pm.isoformat()
             })
             save_data(data)
-
+    if "tomorrow" not in data:
+        data["tomorrow"] = {
+            "status": "Not yet published",
+            "color": "#475569",
+            "message": "",
+            "updated_at": now_uk.strftime("%a %d %b %Y at %H:%M")
+        }
     return data
 
 def save_data(data):
