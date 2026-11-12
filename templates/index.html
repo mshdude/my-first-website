@@ -202,7 +202,7 @@
             <hr style="margin:20px 0;border:0;border-top:1px solid rgba(255,255,255,0.15);">
 
             <div style="font-size:0.8rem;color:#cbd5e1;text-transform:uppercase;letter-spacing:1px;">
-                Planned Status For {{ tomorrow_label }}
+                Status For {{ tomorrow_label }}
             </div>
 
             <div 
@@ -223,26 +223,26 @@
                 {{ tomorrow.message }}
             </p>
             {% endif %}
-            <button class="login-toggle" onclick="togglePassword()">Instructor Admin Login</button>
+            <button class="login-toggle" onclick="togglePassword()">Admin Panel</button>
             <div id="passwordGate" class="password-box">
                 {% if error %}
                     <div class="error-msg">{{ error }}</div>
                 {% endif %}
                 <form method="POST" class="password-row">
                     <input type="password" name="password" placeholder="Enter admin password..." required>
-                    <button type="submit" class="btn">Enter Admin</button>
+                    <button type="submit" class="btn">Enter</button>
                 </form>
             </div>
         </div>
         {% elif page == "admin" %}
         <div class="admin-header">
-            <h2>Airfield Admin Panel</h2>
+            <h2>Admin Panel</h2>
             <div class="admin-nav">
             </div>
         </div>
         <form method="POST">
             <div class="form-group">
-                <label>Set New Airfield Status</label>
+                <label>Set New Status</label>
                 <select name="status_choice">
                     {% for key, val in modes.items() %}
                         <option value="{{ key }}" {% if val[0] == state.status %}selected{% endif %}>
@@ -252,24 +252,24 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Briefing Notes / Reason (Optional)</label>
+                <label>Notes</label>
                 <textarea name="message" rows="2" placeholder="e.g. Northerly winds, ridge looking promising, however fog delaying flying. XC Day.">{{ state.message }}</textarea>
             </div>
                 <hr style="margin:20px 0;border:0;border-top:1px solid rgba(255,255,255,0.15);">
 
                 <div class="form-group">
-                     <label>Tomorrow's Planned Status</label>
+                     <label>Tomorrow's Status</label>
 
                      <select name="tomorrow_status">
-                            <option value="planned_open" {% if tomorrow.status == "Planned Open" %}selected{% endif %}>Planned Open</option>
+                            <option value="planned_open" {% if tomorrow.status == "Planned Open" %}selected{% endif %}>Will Be Open</option>
 
-                            <option value="likely_open" {% if tomorrow.status == "Likely Open" %}selected{% endif %}>Likely Open</option>
+                            <option value="likely_open" {% if tomorrow.status == "Likely Open" %}selected{% endif %}>Delayed Start</option>
 
                             <option value="weather_dependent" {% if tomorrow.status == "Weather Dependent" %}selected{% endif %}>Weather Dependent</option>
 
                             <option value="decision_pending" {% if tomorrow.status == "Decision Pending" %}selected{% endif %}>Decision Pending</option>
 
-                            <option value="planned_closed" {% if tomorrow.status == "Planned Closed" %}selected{% endif %}>Planned Closed</option>
+                            <option value="planned_closed" {% if tomorrow.status == "Planned Closed" %}selected{% endif %}>Closed</option>
                     </select>
                 </div>
 
