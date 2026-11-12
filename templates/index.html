@@ -249,28 +249,6 @@
             </div>
             <button type="submit" class="btn" style="width: 100%; padding: 12px;">Save Changes</button>
         </form>
-        <div class="log-section">
-            <div class="log-title">Status Change Log (Last 14 Days)</div>
-            {% if history %}
-                <div class="log-list">
-                    {% for item in history %}
-                        <div class="log-item" style="border-left-color: {{ item.color }};">
-                            <div class="log-top">
-                                <span class="log-status" style="color: {{ item.color }};">{{ item.status }}</span>
-                                <span class="log-time">{{ item.timestamp }}</span>
-                            </div>
-                            {% if item.message %}
-                                <p class="log-msg">{{ item.message }}</p>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p style="font-size: 0.85rem; color: var(--subtext-color);">No status changes recorded in the last 14 days.</p>
-            {% endif %}
-        </div>
-        {% endif %}
-    </div>
     <script>
         function togglePassword() {
             var box = document.getElementById("passwordGate");
