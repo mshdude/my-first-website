@@ -10,7 +10,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, s
 app = Flask(__name__)
 app.secret_key = "sgc_parham_secret_key_change_me"
 
-ADMIN_PASSWORD = "masonh"
+ADMIN_PASSWORD = "jox@parham26!"
 DATA_FILE = "status_data.json"
 UK_TZ = pytz.timezone("Europe/London")
 
@@ -33,6 +33,7 @@ TOMORROW_MODES = {
     "likely_open": ("Likely Open", "#65a30d"),
     "weather_dependent": ("Weather Dependent", "#eab308"),
     "decision_pending": ("Decision Pending", "#d97706"),
+    "cancelled": ("Tomorrow's Flying Cancelled", "#dc2626"),
     "planned_closed": ("Planned Closed", "#dc2626")
 }
 
