@@ -269,6 +269,8 @@
 
                             <option value="decision_pending" {% if tomorrow.status == "Decision Pending" %}selected{% endif %}>Decision Pending</option>
 
+                            <option value="cancelled" {% if tomorrow.status == "Tomorrow's Flying Cancelled" %}selected{% endif %}>Tomorrow's Flying Cancelled</option>
+
                             <option value="planned_closed" {% if tomorrow.status == "Planned Closed" %}selected{% endif %}>Closed</option>
                     </select>
                 </div>
@@ -279,7 +281,7 @@
                         <textarea
                         name="tomorrow_message"
                         rows="2"
-                        placeholder="e.g. Good forecast, intending to operate from 09:30.">
+                        placeholder="e.g. Delayed start due to fog, will be starting sometime onwards from 11:00.">
                 {{ tomorrow.message }}</textarea>
                 </div>
             </div>
