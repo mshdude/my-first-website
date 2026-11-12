@@ -254,6 +254,33 @@
             <div class="form-group">
                 <label>Briefing Notes / Reason (Optional)</label>
                 <textarea name="message" rows="2" placeholder="e.g. Northerly winds, ridge looking promising, however fog delaying flying. XC Day.">{{ state.message }}</textarea>
+                <hr style="margin:20px 0;border:0;border-top:1px solid rgba(255,255,255,0.15);">
+
+                <div class="form-group">
+                     <label>Tomorrow's Planned Status</label>
+
+                     <select name="tomorrow_status">
+                            <option value="planned_open" {% if tomorrow.status == "Planned Open" %}selected{% endif %}>Planned Open</option>
+
+                            <option value="likely_open" {% if tomorrow.status == "Likely Open" %}selected{% endif %}>Likely Open</option>
+
+                            <option value="weather_dependent" {% if tomorrow.status == "Weather Dependent" %}selected{% endif %}>Weather Dependent</option>
+
+                            <option value="decision_pending" {% if tomorrow.status == "Decision Pending" %}selected{% endif %}>Decision Pending</option>
+
+                            <option value="planned_closed" {% if tomorrow.status == "Planned Closed" %}selected{% endif %}>Planned Closed</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tomorrow's Notes</label>
+
+                        <textarea
+                        name="tomorrow_message"
+                        rows="2"
+                        placeholder="e.g. Good forecast, intending to operate from 09:30.">
+                {{ tomorrow.message }}</textarea>
+                </div>
             </div>
             <button type="submit" class="btn" style="width: 100%; padding: 12px;">Save Changes</button>
         </form>
