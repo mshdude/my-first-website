@@ -191,6 +191,9 @@
         {% if page == "public" %}
         <div class="public-view">
             <div class="club-name">Southdown Gliding Club (Parham Airfield)</div>
+            <div class="last-updated">
+                Status for {{ today_label }}
+            </div>
             <div class="status-badge">{{ state.status }}</div>
             {% if state.message %}
             <p class="status-message">{{ state.message }}</p>
