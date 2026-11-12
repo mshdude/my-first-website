@@ -90,7 +90,7 @@ def load_data():
         "updated_at": now_uk.strftime("%a %d %b %Y at %H:%M")
     },
     "history": []
-}
+    }
 
     # AUTOMATIC 5:00 PM (17:00) DAILY CLOSURE CHECK
     now_uk = datetime.now(UK_TZ)
