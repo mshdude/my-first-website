@@ -199,6 +199,30 @@
             <p class="status-message">{{ state.message }}</p>
             {% endif %}
             <div class="last-updated">Last updated: {{ state.updated_at }}</div>
+            <hr style="margin:20px 0;border:0;border-top:1px solid rgba(255,255,255,0.15);">
+
+            <div style="font-size:0.8rem;color:#cbd5e1;text-transform:uppercase;letter-spacing:1px;">
+                Planned Status For {{ tomorrow_label }}
+            </div>
+
+            <div 
+                style="
+                    background:{{ tomorrow.color }};
+                    color:white;
+                    padding:12px 20px;
+                    border-radius:8px;
+                    display:inline-block;
+                    margin-top:10px;
+                    font-weight:700;
+                ">
+                {{ tomorrow.status }}
+            </div>
+
+            {% if tomorrow.message %}
+            <p class="status-message">
+                {{ tomorrow.message }}
+            </p>
+            {% endif %}
             <button class="login-toggle" onclick="togglePassword()">Instructor Admin Login</button>
             <div id="passwordGate" class="password-box">
                 {% if error %}
