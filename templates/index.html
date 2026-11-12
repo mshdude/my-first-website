@@ -261,9 +261,9 @@
                      <label>Tomorrow's Status</label>
 
                      <select name="tomorrow_status">
-                            <option value="planned_open" {% if tomorrow.status == "Planned Open" %}selected{% endif %}>Will Be Open</option>
+                            <option value="planned_open" {% if tomorrow.status == "Will Be Open" %}selected{% endif %}>Will Be Open</option>
 
-                            <option value="likely_open" {% if tomorrow.status == "Likely Open" %}selected{% endif %}>Delayed Start</option>
+                            <option value="likely_open" {% if tomorrow.status == "Delayed Start" %}selected{% endif %}>Delayed Start</option>
 
                             <option value="weather_dependent" {% if tomorrow.status == "Weather Dependent" %}selected{% endif %}>Weather Dependent</option>
 
@@ -271,7 +271,7 @@
 
                             <option value="cancelled" {% if tomorrow.status == "Tomorrow's Flying Cancelled" %}selected{% endif %}>Tomorrow's Flying Cancelled</option>
 
-                            <option value="planned_closed" {% if tomorrow.status == "Planned Closed" %}selected{% endif %}>Closed</option>
+                            <option value="planned_closed" {% if tomorrow.status == "Closed" %}selected{% endif %}>Closed</option>
                     </select>
                 </div>
 
