@@ -79,7 +79,7 @@ def load_data():
             "current": {
                 "status": "Closed",
                 "color": "#dc2626",
-                "message": "Airfield closed outside flying hours.",
+                "message": "Out of flying hours (17:00 onwards)",
                 "updated_at": now_uk.strftime("%a %d %b %Y at %H:%M"),
                 "iso_time": now_uk.isoformat()
             },
