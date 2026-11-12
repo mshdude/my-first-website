@@ -198,7 +198,16 @@ def home():
             login_error = "Incorrect password."
 
     weather_brief = get_weather_summary()
-    return render_template('index.html', page="public", state=data["current"], weather=weather_brief, error=login_error)
+    return render_template(
+    'index.html',
+    page="public",
+    state=data["current"],
+    tomorrow=data["tomorrow"],
+    today_label=datetime.now(UK_TZ).strftime("%A %d %B %Y"),
+    tomorrow_label=(datetime.now(UK_TZ) + timedelta(days=1)).strftime("%A %d %B %Y"),
+    weather=weather_brief,
+    error=login_error
+    )
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
