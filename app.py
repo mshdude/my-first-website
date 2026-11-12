@@ -76,15 +76,21 @@ def load_data():
     if not data:
         now_uk = datetime.now(UK_TZ)
         data = {
-            "current": {
-                "status": "Closed",
-                "color": "#dc2626",
-                "message": "Out of flying hours (17:00 onwards)",
-                "updated_at": now_uk.strftime("%a %d %b %Y at %H:%M"),
-                "iso_time": now_uk.isoformat()
-            },
-            "history": []
-        }
+    "current": {
+        "status": "Closed",
+        "color": "#dc2626",
+        "message": "Out of flying hours (17:00 onwards)",
+        "updated_at": now_uk.strftime("%a %d %b %Y at %H:%M"),
+        "iso_time": now_uk.isoformat()
+    },
+    "tomorrow": {
+        "status": "Not yet published",
+        "color": "#475569",
+        "message": "",
+        "updated_at": now_uk.strftime("%a %d %b %Y at %H:%M")
+    },
+    "history": []
+}
 
     # AUTOMATIC 5:00 PM (17:00) DAILY CLOSURE CHECK
     now_uk = datetime.now(UK_TZ)
