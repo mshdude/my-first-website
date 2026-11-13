@@ -156,14 +156,37 @@ def save_data(data):
 
 def get_weather_summary():
     try:
-        url = "https://open-meteo.com"
+        url = (
+            "https://api.open-meteo.com/v1/forecast"
+            "?latitude=50.91"
+            "&longitude=-0.45"
+            "&current=temperature_2m,cloud_cover,precipitation,wind_speed_10m,wind_direction_10m"
+        )
+
         r = requests.get(url, timeout=3)
         c = r.json().get("current", {})
+
         wind_kt = round(c.get("wind_speed_10m", 0))
         wind_dir = round(c.get("wind_direction_10m", 0))
         temp = round(c.get("temperature_2m", 0))
         clouds = round(c.get("cloud_cover", 0))
         rain = c.get("precipitation", 0)
+
+        if rain > 0.2:
+            outlook = "Precipitation detected at Parham; visibility and launch operations likely affected."
+        elif wind_kt > 22:
+            outlook = f"Strong winds ({wind_kt} kt); challenging ground handling and winch/aerotow limits."
+        elif (290 <= wind_dir <= 360 or 0 <= wind_dir <= 40) and wind_kt >= 10:
+            outlook = f"Northerly airflow ({wind_dir}° at {wind_kt} kt) — favourable for South Downs ridge lift."
+        elif wind_kt < 8:
+            outlook = f"Light winds ({wind_kt} kt); calm circuit conditions, thermal-dependent soaring."
+        else:
+            outlook = f"Moderate {wind_dir}° breeze at {wind_kt} kt with {clouds}% cloud cover; flyable conditions."
+
+        return f"{temp}°C • Wind {wind_kt} kt from {wind_dir}° • {outlook}"
+
+    except Exception:
+        return None
 
         # Gliding ridge & conditions analysis for Parham / South Downs
         if rain > 0.2:
