@@ -40,7 +40,7 @@ TOMORROW_MODES = {
 def github_load():
     if not (GITHUB_TOKEN and GITHUB_REPO):
         return None
-    url = f"https://github.com{GITHUB_REPO}/contents/{DATA_FILE}"
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{DATA_FILE}"
     headers = {"Authorization": f"token {GITHUB_TOKEN}", "Accept": "application/vnd.github.v3+json"}
     try:
         r = requests.get(url, headers=headers, timeout=5)
@@ -54,7 +54,7 @@ def github_load():
 def github_save(data):
     if not (GITHUB_TOKEN and GITHUB_REPO):
         return
-    url = f"https://github.com{GITHUB_REPO}/contents/{DATA_FILE}"
+    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{DATA_FILE}"
     headers = {"Authorization": f"token {GITHUB_TOKEN}", "Accept": "application/vnd.github.v3+json"}
     try:
         sha = None
