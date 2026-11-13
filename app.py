@@ -8,7 +8,10 @@ import requests
 from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
 
 app = Flask(__name__)
-app.secret_key = "sgc_parham_secret_key_change_me"
+app.secret_key = os.environ.get(
+    "SECRET_KEY",
+    "sgc_parham_secret_key_change_me"
+)
 
 ADMIN_PASSWORD = "jox@parham26!"
 DATA_FILE = "status_data.json"
